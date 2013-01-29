@@ -8,7 +8,7 @@ Entity Sum_of_Product is
     );
 End Sum_of_Product;
 
-Architecure dataflow of Sum_of_Product is
+Architecture dataflow of Sum_of_Product is
 Signal S1, S2: std_logic;
 Begin
     S1 <= w0 AND NOT s;
