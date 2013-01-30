@@ -12,7 +12,7 @@ entity mux is
 end mux;
 
 architecture int_rom of mux is
-    type rom_type is array(7 downto 0) of std_logic_vector(31 downto 0);
+    type rom_type is array(0 to 7) of std_logic_vector(31 downto 0);
     constant rom_a : rom_type := ( 
         "11000001100100000000000000000000", -- = 0xC1900000 = -1.001x2^4 = -18.0
         "01000011000001100001000000000000", -- = 0x43061000 = +1.00001100001x2^7 = 134.0625
