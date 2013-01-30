@@ -14,7 +14,7 @@ entity ctrl_unit is
         enable_add  : out std_logic;
         enable_res  : out std_logic;
         flush       : out std_logic;
-        ready       : out std_logic
+        ready       : out std_logic_vector(7 downto 0)
     );
 end ctrl_unit;
 
@@ -28,7 +28,8 @@ begin
         load_mant <= '0';
         enable <= '0';
         enable_add <= '0';
-        ready <= '0';
+        enable_res <= '0';
+        ready <= (others=>'0');
         flush <= '0';
         next_state <= init;
         case current_state is
@@ -71,11 +72,11 @@ begin
                 -- wait one clock cycle
                 next_state <= display;
             when display =>
-                ready <= '1';
+                ready <= (others=>'1');
                 enable_res <= '1';
                 next_state <= display_dmy;
             when display_dmy =>
-                ready <= '0';
+                ready <= (others=>'0');
                 enable_res <= '0';
                 if rising_edge(start) then
                     next_state <= read;
@@ -87,7 +88,7 @@ begin
 
     process (clk, reset)
     begin
-        if reset='1' then
+        if reset='0' then
             current_state <= init;
         elsif rising_edge(clk) then
             current_state <= next_state;
