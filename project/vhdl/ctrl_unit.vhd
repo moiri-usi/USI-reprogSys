@@ -6,12 +6,13 @@ entity ctrl_unit is
         clk         : in std_logic;
         reset       : in std_logic;
         start       : in std_logic;
-        ready_multi  : in std_logic;
+        ready_multi : in std_logic;
         ready_mant  : in std_logic;
-        load_multi   : out std_logic;
+        load_multi  : out std_logic;
         load_mant   : out std_logic;
         enable      : out std_logic;
         enable_add  : out std_logic;
+        enable_res  : out std_logic;
         flush       : out std_logic;
         ready       : out std_logic
     );
@@ -71,9 +72,11 @@ begin
                 next_state <= display;
             when display =>
                 ready <= '1';
+                enable_res <= '1';
                 next_state <= display_dmy;
             when display_dmy =>
                 ready <= '0';
+                enable_res <= '0';
                 if rising_edge(start) then
                     next_state <= read;
                 else

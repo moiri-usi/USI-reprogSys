@@ -11,6 +11,7 @@ add wave load_multi
 add wave load_mant
 add wave enable
 add wave enable_add
+add wave enable_res
 add wave flush
 add wave ready
 
