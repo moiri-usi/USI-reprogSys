@@ -43,7 +43,7 @@ begin
 		       r_msb_s<='0';
 		       result_mult_s<=(others => '0');
 		    else
-		      if rising_edge(clk) and enable='1' then
+		      if rising_edge(clk) then
 		        a_m_s <=a_m_s(46 downto 0) & '0';
 		        b_m_s<='0' & b_m_s(23 downto 1);
 		        count<=count + 1;
