@@ -10,7 +10,7 @@ port(
 	reset: in std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
 	r_msb: out std_logic;
-	overflow_mult: out std_logic;
+	--overflow_mult: out std_logic;
 	ready_mult: out std_logic
 );
 end int_multiplier;  
@@ -27,7 +27,7 @@ begin
 		begin
 		  if reset ='0' then
 		    --ready_mult<='0';
-		    overflow_mult<='0';
+		    --overflow_mult<='0';
 		    r_msb_s<='0';
 		    a_m_s<=(others => '0');
 		    b_m_s<=(others => '0');
@@ -36,14 +36,14 @@ begin
 		  else
 		    if load_mult ='1' then
 		       --ready_mult<='0';
-		       overflow_mult<='0';
+		       --overflow_mult<='0';
 		       a_m_s<="0000000000000000000000001" & a_m;
 		       b_m_s<= '1' & b_m;
 		       count<="00000";
 		       r_msb_s<='0';
 		       result_mult_s<=(others => '0');
 		    else
-		      if rising_edge(clk) then
+		      if rising_edge(clk) and enable='1' then
 		        a_m_s <=a_m_s(46 downto 0) & '0';
 		        b_m_s<='0' & b_m_s(23 downto 1);
 		        count<=count + 1;
