@@ -12,45 +12,45 @@ entity ctrl_unit is
         load_mant   : out std_logic;
         enable      : out std_logic;
         enable_add  : out std_logic;
-        flush       : out std_logic
-        ready       : out std_logic;
+        flush       : out std_logic;
+        ready       : out std_logic
     );
 end ctrl_unit;
 
-architecture sm of control is
-    type state is (reset, read, mult, extract, assemble, display);
+architecture sm of ctrl_unit is
+    type state is (init, read, mult, extract, assemble, display);
     signal current_state, next_state : state;
 begin
     process (current_state, reset, start, clk, ready_mult, ready_mant)
     begin
-        load_mult <= 0;
-        load_mant <= 0;
-        enable <= 0;
-        enable_add <= 0;
-        ready <= 0;
-        flush <= 0;
-        next_state <= reset;
+        load_mult <= '0';
+        load_mant <= '0';
+        enable <= '0';
+        enable_add <= '0';
+        ready <= '0';
+        flush <= '0';
+        next_state <= init;
         case current_state is
-            when reset =>
-                if start='1' then
+            when init =>
+                if rising_edge(start) then
                     next_state <= read;
                 else
-                    next_state <= reset;
+                    next_state <= init;
                 end if;
             when read =>
                 next_state <= mult;
-                enable <= 1;
-                flush <= 1;
+                enable <= '1';
+                flush <= '1';
             when mult =>
-                load_mult <= 1;
+                load_mult <= '1';
                 if ready_mult='1' then
                     next_state <= extract;
                 else
                     next_state <= mult;
                 end if;
             when extract =>
-                enable_add <= 1;
-                load_mant <= 1;
+                enable_add <= '1';
+                load_mant <= '1';
                 if ready_mant='1' then
                     next_state <= assemble;
                 else
@@ -61,8 +61,8 @@ begin
                 -- wait one clock cycle
                 next_state <= display;
             when display =>
-                ready <= 1;
-                if start='1' then
+                ready <= '1';
+                if rising_edge(start) then
                     next_state <= read;
                 else
                     next_state <= display;
