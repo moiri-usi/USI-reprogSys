@@ -8,6 +8,7 @@ port(
 	exp:in std_logic_vector(7 downto 0);
 	sign:in std_logic;
 	clk: in std_logic;
+	enable_res: in std_logic;
 	flush: in std_logic;
 	reset: in std_logic;
 	result: out std_logic_vector(31 downto 0)
@@ -26,7 +27,9 @@ begin
 		      if flush ='1' then
 		        result_s<=(others => '0');
 		      else
+		       if enable_res<='1' then  
 		        result_s<=sign & exp & mant; 
+		       end if;
 		      end if;
 		    end if;
 		  end if;
