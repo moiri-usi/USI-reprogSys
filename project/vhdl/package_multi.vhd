@@ -9,8 +9,7 @@ Component control
 		clk : in std_logic;
 		reset : in std_logic;
 		start : in std_logic;
-		Ready_multi : in std_logic;
-		ready_mant : in std_logic;	
+		Ready_multi : in std_logic;	
 		
 		enable_res : out std_logic;
 		flush : out std_logic;
@@ -38,7 +37,7 @@ Component datapath is
 		
 		result : out std_logic_vector (31 downto 0);
 		ready_multi : out std_logic;
-		ready_mant : out std_logic;
+		
 		out_AB : out std_logic_vector (31 downto 0)
 		
 	);
@@ -47,10 +46,7 @@ end component;
 component extractor is
 port(	
 	result_mult:in std_logic_vector(47 downto 0);
-	clk: in std_logic;
 	load_mant: in std_logic;
-	reset: in std_logic;
-	ready_mant: out std_logic;
 	result_mant: out std_logic_vector(22 downto 0)
 );
 end component;  

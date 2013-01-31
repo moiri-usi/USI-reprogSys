@@ -19,7 +19,6 @@ port (
 		
 		result : out std_logic_vector (31 downto 0);
 		ready_multi : out std_logic;
-		ready_mant : out std_logic;
 		out_AB : out std_logic_vector (31 downto 0)		
 	);
 end datapath;
@@ -106,10 +105,7 @@ begin
 							
 	extrac : extractor port map(
 							result_mult => result_mult_in,
-							clk => clk,
 							load_mant => load_mant,
-							reset => reset,
-							ready_mant => ready_mant,
 							result_mant => resul_mant_in
 								);
 							

@@ -7,7 +7,6 @@ entity control is
         reset       : in std_logic;
         start       : in std_logic;
         ready_multi : in std_logic;
-        ready_mant  : in std_logic;
         load_multi  : out std_logic;
         load_mant   : out std_logic;
         enable      : out std_logic;
@@ -21,7 +20,7 @@ architecture sm of control is
   type state is (init, read, mult, mult_dmy, extract, extract_dmy, assemble, display);
   signal current_state, next_state : state;
   begin 
-  process(current_state,start,ready_multi,ready_mant) 
+  process(current_state,start,ready_multi) 
   begin 
     load_multi<='0';
     load_mant<='0';
@@ -34,7 +33,7 @@ architecture sm of control is
     case current_state is
         when init => 
             next_state <= init;
-            if start = '1' then
+            if start ='1' then
                 next_state <= read;
             end if;
         when read =>
@@ -52,21 +51,17 @@ architecture sm of control is
             end if; 
         when extract =>
             enable_add <= '1';
-            load_mant <= '1';
             next_state <= extract_dmy;
         when extract_dmy =>
-            if ready_mant='1' then
+            load_mant<='1';
                 next_state <= assemble;
-            else
-                next_state <= extract_dmy;
-            end if;
         when assemble =>
             next_state <= display;
             enable_res<='1';
         when display =>
             ready <= (others=>'1');
             next_state <= display;
-            if start = '1' then
+            if start='1' then
                 next_state <= read;
             end if;
         end case;

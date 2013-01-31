@@ -5,42 +5,23 @@ use ieee.std_logic_unsigned.all;
 entity extractor is
 port(	
 	result_mult:in std_logic_vector(47 downto 0);
-	clk: in std_logic;
 	load_mant: in std_logic;
-	reset: in std_logic;
-	ready_mant: out std_logic;
 	result_mant: out std_logic_vector(22 downto 0)
 );
 end extractor;  
 
 architecture extractor_arch of extractor is
-signal result_mult_s:std_logic_vector(47 downto 0):=(others => '0');
-signal enable: std_logic:='0';
+signal result_mant_s:std_logic_vector(22 downto 0):=(others => '0');
+signal ready_mant_s: std_logic:='0';
 begin
-    process(clk,reset,load_mant, result_mult)
-		begin
-		  if reset ='0' then
-		    result_mult_s<=(others => '0');
-		    enable<='1';
-		    result_mant<=(others => '0');
+	process(load_mant,result_mult)
+	begin
+	 if load_mant='1' then
+		  if result_mult(47)='1' then
+			 result_mant<=result_mult(46 downto 24);
 		  else
-		    if load_mant ='1' then
-		       result_mult_s<= result_mult;
-		       result_mant<=(others => '0');
-		       enable<='1';
-		    else
-		      if rising_edge(clk) then
-		        ready_mant<='0';
-		      if enable='1' then
-		        result_mult_s <= result_mult_s(46 downto 0) & '0';
-		        if result_mult_s(47) ='1' then
-		         enable<='0';
-		         result_mant<=result_mult_s(46 downto 24);
-		         ready_mant<='1';
-   	        end if;
-		       end if;
-		      end if;
-		    end if;
-		 end if;
-		end process;
+			 result_mant<=result_mult(45 downto 23);
+		  end if;
+	end if;
+	end process;
 end extractor_arch;
