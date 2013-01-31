@@ -38,47 +38,46 @@ architecture sm of control is
                 next_state <= read;
             end if;
         when read =>
-          next_state <= mult;
-          enable <= '1';
-          flush <= '1';
-         when mult =>
-          load_multi <= '1';
-          next_state <= mult_dmy;
-         when mult_dmy =>         
-          if ready_multi='1' then
-              next_state <= extract;
-          else
-              next_state <= mult_dmy;
-          end if; 
-         when extract =>
-          enable_add <= '1';
-          load_mant <= '1';
-          next_state <= extract_dmy;
-         when extract_dmy =>
-          if ready_mant='1' then
-              next_state <= assemble;
-          else
-              next_state <= extract_dmy;
-          end if;
-         when assemble =>
+            next_state <= mult;
+            enable <= '1';
+            flush <= '1';
+        when mult =>
+            load_multi <= '1';
+            next_state <= mult_dmy;
+        when mult_dmy =>         
+            if ready_multi='1' then
+                next_state <= extract;
+            else
+                next_state <= mult_dmy;
+            end if; 
+        when extract =>
+            enable_add <= '1';
+            load_mant <= '1';
+            next_state <= extract_dmy;
+        when extract_dmy =>
+            if ready_mant='1' then
+                next_state <= assemble;
+            else
+                next_state <= extract_dmy;
+            end if;
+        when assemble =>
             next_state <= display;
             enable_res<='1';
-         when display =>
+        when display =>
             ready <= (others=>'1');
             next_state <= display;
             if rising_edge(start) then
                 next_state <= read;
             end if;
         end case;
-       end process;
+    end process;
+
     process(clk, reset) 
     begin 
-      if reset='0' then
-         current_state<= init; 
-      else
-      if rising_edge(clk) then
-         current_state<= next_state; 
-      end if;
-    end if; 
+        if reset='0' then
+            current_state<= init; 
+        elsif rising_edge(clk) then
+            current_state<= next_state; 
+        end if; 
     end process; 
 end sm;
