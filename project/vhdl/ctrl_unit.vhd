@@ -18,7 +18,7 @@ entity control is
     );
 end control;
 architecture sm of control is
-  type state is (init, read, mult, mult_dmy, extract, extract_dmy, assemble, display, display_dmy);
+  type state is (init, read, mult, mult_dmy, extract, extract_dmy, assemble, display);
   signal current_state, next_state : state;
   begin 
   process(current_state,start,ready_multi,ready_mant) 
@@ -62,18 +62,14 @@ architecture sm of control is
               next_state <= extract_dmy;
           end if;
          when assemble =>
-                -- TODO: is this state needed?
-                -- wait one clock cycle
             next_state <= display;
             enable_res<='1';
          when display =>
             ready <= (others=>'1');
-            next_state <= display_dmy;
-          when display_dmy =>
             if rising_edge(start) then
                 next_state <= read;
             else
-                next_state <= display_dmy;
+                next_state <= display;
             end if;
         end case;
        end process;
