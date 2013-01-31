@@ -8,14 +8,14 @@ entity Multiplier is
 port ( 
 		clk : in std_logic;
 		reset : in std_logic;
-		add_A : in std_logic_vector (2 downto 0);
-		add_B : in std_logic_vector (2 downto 0);
+		addrA : in std_logic_vector (2 downto 0);
+		addrB : in std_logic_vector (2 downto 0);
 		start : in std_logic;
-		show_AB : in std_logic;
+		showAB : in std_logic;
 		
 		result : out std_logic_vector (31 downto 0);
-		out_AB : out std_logic_vector (31 downto 0);
-		ready_m : out std_logic_vector (7 downto 0)
+		outAB : out std_logic_vector (31 downto 0);
+		ready : out std_logic_vector (7 downto 0)
 		);
 	
 end Multiplier;
@@ -39,16 +39,16 @@ u1: control port map ( clk 			=> clk,
 								ready => ready_s,
 								enable_res => enable_res_in
 							);
-ready_m<=ready_s;
+ready<=ready_s;
 u2: datapath port map ( 
-								add_A => add_A,
-								add_B => add_B,
+								add_A => addrA,
+								add_B => addrB,
 								clk => clk,
 								reset => reset,
 								load_multi => load_multi_in,
 								enable_add => enable_add_in,
 								load_mant => load_mant_in,
-								show_AB => show_AB,
+								show_AB => showAB,
 								enable => enable_in,
 								flush => flush_in,
 								enable_res => enable_res_in,
@@ -56,7 +56,7 @@ u2: datapath port map (
 								result => result,
 								ready_multi => ready_multi_in,
 								ready_mant => ready_mant_in,
-								out_AB => out_AB
+								out_AB => outAB
 						
 							);
 							

@@ -34,7 +34,7 @@ architecture sm of control is
     case current_state is
         when init => 
             next_state <= init;
-            if rising_edge(start) then
+            if start = '1' then
                 next_state <= read;
             end if;
         when read =>
@@ -66,7 +66,7 @@ architecture sm of control is
         when display =>
             ready <= (others=>'1');
             next_state <= display;
-            if rising_edge(start) then
+            if start = '1' then
                 next_state <= read;
             end if;
         end case;

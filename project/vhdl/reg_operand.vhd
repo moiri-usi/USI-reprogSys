@@ -17,7 +17,7 @@ end reg_operand;
 
 architecture reg_operand_arch of reg_operand is
 begin
-    process(clk,reset)
+    process(clk,reset,enable)
 		begin
 		  if reset ='0' then
 		    op_out<=(others => '0');

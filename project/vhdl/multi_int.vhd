@@ -23,7 +23,7 @@ signal result_mult_s:std_logic_vector(47 downto 0):=(others => '0');
 signal ready_mult_s:std_logic:='0';
 signal count:std_logic_vector(4 downto 0):="00000";
 begin
-    process(clk,reset,load_mult)
+    process(clk,reset,load_mult, a_m, b_m)
 		begin
 		  if reset ='0' then
 		    --ready_mult<='0';
