@@ -21,27 +21,27 @@ signal count:std_logic_vector(4 downto 0);
 begin
     process(clk,reset,load_mult,a_m,b_m,result_mult_s)
 		begin
-		  result_mult<=result_mult_s;
 		  if reset ='0' then
 		    a_m_s<=(others => '0');
 		    b_m_s<=(others => '0');
 		    count<="00000";
-		    result_mult<=(others => '0');
+		    result_mult_s<=(others => '0');
 		  else
-		    if load_mult ='1' then
-		       a_m_s<="0000000000000000000000001" & a_m;
-		       b_m_s<= '1' & b_m;
-		       count<="00000";
-		       result_mult_s<=(others => '0');
-		    else
 		      if rising_edge(clk) then
-		        a_m_s <=a_m_s(46 downto 0) & '0';
-		        b_m_s<='0' & b_m_s(23 downto 1);
-		        count<=count + 1;
-		        if b_m_s(0) ='1' then
-		         result_mult_s<=result_mult_s + a_m_s;
-		        end if;
-		       end if;
+		        if load_mult ='1' then
+		         a_m_s<="0000000000000000000000001" & a_m;
+		         b_m_s<= '1' & b_m;
+		         count<="00000";
+		         result_mult_s<=(others => '0');
+		      else
+		         a_m_s <=a_m_s(46 downto 0) & '0';
+		         b_m_s<='0' & b_m_s(23 downto 1);
+		         count<=count + 1;
+		         result_mult_s<=result_mult_s;
+		         if b_m_s(0) ='1' then
+		          result_mult_s<=result_mult_s + a_m_s;
+		         end if;
+		      end if;
 		    end if;
 		 end if;
 		end process;
@@ -54,4 +54,5 @@ begin
 		    end if;
 		  end if;
 		end process;
+result_mult<=result_mult_s;
 end int_multiplier_arch;
