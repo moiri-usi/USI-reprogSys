@@ -8,6 +8,7 @@ port(
 	clk: in std_logic;
 	load_mult: in std_logic;
 	reset: in std_logic;
+	mant_overflow: out std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
 	ready_mult: out std_logic
 );
@@ -29,6 +30,7 @@ begin
 		  else
 		      if rising_edge(clk) then
 		        if load_mult ='1' then
+		         mant_overflow <='0';
 		         a_m_s<="0000000000000000000000001" & a_m;
 		         b_m_s<= '1' & b_m;
 		         count<="00000";
@@ -40,6 +42,9 @@ begin
 		         result_mult_s<=result_mult_s;
 		         if b_m_s(0) ='1' then
 		          result_mult_s<=result_mult_s + a_m_s;
+		          if result_mult_s(47)='1' and a_m_s(47)='1'then
+		            mant_overflow <= '1';
+		           end if;
 		         end if;
 		      end if;
 		    end if;

@@ -61,6 +61,7 @@ port(
 	clk: in std_logic;
 	load_mult: in std_logic;
 	reset: in std_logic;
+	mant_overflow: out std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
 	ready_mult: out std_logic
 );
@@ -71,6 +72,7 @@ port(
 	exp_a:in std_logic_vector(7 downto 0);
 	exp_b:in std_logic_vector(7 downto 0);
 	r_msb: in std_logic;
+	exp_overflow: out std_logic;
 	exp_res: out std_logic_vector(7 downto 0));
 end component;
 
