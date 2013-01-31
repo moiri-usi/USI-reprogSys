@@ -32,6 +32,7 @@ architecture behaviour of datapath is
  -- signal for extractor
  signal resul_mant_in : std_logic_vector (22 downto 0);
  
+ signal to_do_signal: std_logic;
  
 begin 
 	a_rom : rom_a port map (
@@ -72,6 +73,7 @@ begin
 							clk => clk,
 							load_mult => load_multi,
 							reset => reset,
+							mant_overflow => to_do_signal,
 							result_mult => result_mult_in, 
 							ready_mult => ready_multi	
 							);
@@ -80,6 +82,7 @@ begin
 							exp_a => op_a_out_in(30 downto 23),
 							exp_b => op_b_out_in(30 downto 23),
 							r_msb => result_mult_in(47),
+							exp_overflow => to_do_signal,
 							exp_res => exp_res_in
 							);
 							
