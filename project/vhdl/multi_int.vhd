@@ -17,16 +17,16 @@ architecture int_multiplier_arch of int_multiplier is
 signal a_m_s:std_logic_vector(47 downto 0);
 signal b_m_s:std_logic_vector(23 downto 0);
 signal result_mult_s:std_logic_vector(47 downto 0);
-signal ready_mult_s:std_logic;
 signal count:std_logic_vector(4 downto 0);
 begin
-    process(clk,reset,load_mult,a_m,b_m)
+    process(clk,reset,load_mult,a_m,b_m,result_mult_s)
 		begin
+		  result_mult<=result_mult_s;
 		  if reset ='0' then
 		    a_m_s<=(others => '0');
 		    b_m_s<=(others => '0');
 		    count<="00000";
-		    result_mult_s<=(others => '0');
+		    result_mult<=(others => '0');
 		  else
 		    if load_mult ='1' then
 		       a_m_s<="0000000000000000000000001" & a_m;
@@ -48,12 +48,10 @@ begin
 		process(clk)
 		begin
 		  if rising_edge(clk) then
-		    ready_mult_s<='0';
+		    ready_mult<='0';
 		    if count="10111" then
-		     ready_mult_s<='1';
+		     ready_mult<='1';
 		    end if;
 		  end if;
 		end process;
-		result_mult<=result_mult_s;
-		ready_mult<=ready_mult_s;
 end int_multiplier_arch;
