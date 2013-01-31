@@ -27,9 +27,10 @@ begin
 		      if flush ='1' then
 		        result_s<=(others => '0');
 		      else
-		       if enable_res<='1' then  
+		       if enable_res='1' then  
 		        result_s<=sign & exp & mant; 
 		       end if;
+		       
 		      end if;
 		    end if;
 		  end if;

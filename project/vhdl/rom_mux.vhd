@@ -34,7 +34,54 @@ architecture int_rom of mux is
         "00000000000000000000000000000000"  -- = 0x00000000 = 0.0
     );
 begin
-    op_a <= rom_a( to_integer( unsigned( add_a ) ) );
-    op_b <= rom_b( to_integer( unsigned( add_b ) ) );
+process(add_a)
+  begin
+  case add_a is
+   when "000"  =>
+     op_a <= rom_a(0);
+   when "001"  =>
+     op_a <= rom_a(1);
+   when "010"  =>
+     op_a <= rom_a(2);
+   when "011"  =>
+     op_a <= rom_a(3);
+   when "100"  =>
+     op_a <= rom_a(4);
+   when "101"  =>
+     op_a <= rom_a(5); 
+   when "110"  =>
+     op_a <= rom_a(6); 
+   when "111"  =>
+     op_a <= rom_a(7); 
+   when others =>
+     null;
+   end case;
+end process;
+
+process(add_b)
+  begin
+  case add_b is
+   when "000"  =>
+     op_b <= rom_b(0);
+   when "001"  =>
+     op_b <= rom_b(1);
+   when "010"  =>
+     op_b <= rom_b(2);
+   when "011"  =>
+     op_b <= rom_b(3);
+   when "100"  =>
+     op_b <= rom_b(4);
+   when "101"  =>
+     op_b <= rom_b(5); 
+   when "110"  =>
+     op_b <= rom_b(6); 
+   when "111"  =>
+     op_b <= rom_b(7);
+    when others =>
+     null; 
+   end case;
+end process;
+    --op_a <= rom_a(0 );-- to_integer( unsigned( add_a ) )
+    --op_b <= rom_b(to_integer( unsigned( add_b,1 ) ));
 end int_rom;
 

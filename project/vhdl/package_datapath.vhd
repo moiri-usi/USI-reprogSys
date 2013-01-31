@@ -80,8 +80,8 @@ begin
 							
 	sign_result <= sign_a_in xor sign_b_in;
 	
-	out_AB <= op_a_out_in when show_AB = '1'
-					else op_b_out_in;
+	out_AB <= op_b_out_in when show_AB = '1'
+					else op_a_out_in;
 	
 	multi: int_multiplier port map (
 							a_m => mant_a_in,

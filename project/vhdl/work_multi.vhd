@@ -15,7 +15,7 @@ port (
 		
 		result : out std_logic_vector (31 downto 0);
 		out_AB : out std_logic_vector (31 downto 0);
-		ready : out std_logic_vector (7 downto 0)
+		ready_m : out std_logic_vector (7 downto 0)
 		);
 	
 end Multiplier;
@@ -23,7 +23,7 @@ end Multiplier;
 Architecture behavior of Multiplier is
 
 	signal ready_multi_in, ready_mant_in, flush_in, enable_add_in, load_mant_in, enable_in, load_multi_in, enable_res_in : std_logic:='0';
-  signal ready_out:std_logic_vector(7 downto 0);
+	signal ready_s:std_logic_vector(7 downto 0);
 begin 
 
 u1: control port map ( clk 			=> clk,
@@ -31,16 +31,15 @@ u1: control port map ( clk 			=> clk,
 								start			=> start,
 								Ready_multi => ready_multi_in,
 								Ready_mant => ready_mant_in,
-								
 								flush => flush_in,
 								enable => enable_in,
 								load_mant => load_mant_in,
 								enable_add => enable_add_in,
 								load_multi => load_multi_in,
-								ready => ready_out,
+								ready => ready_s,
 								enable_res => enable_res_in
 							);
-
+ready_m<=ready_s;
 u2: datapath port map ( 
 								add_A => add_A,
 								add_B => add_B,
@@ -60,5 +59,5 @@ u2: datapath port map (
 								out_AB => out_AB
 						
 							);
-						ready<=ready_out;	
+							
 end behavior;

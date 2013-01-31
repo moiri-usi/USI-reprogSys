@@ -57,9 +57,11 @@ begin
 		end process;
 		process(clk)
 		begin
-		  ready_mult_s<='0';
-		  if count="10111" and rising_edge(clk) then
-		    ready_mult_s<='1';
+		  if rising_edge(clk) then
+		    ready_mult_s<='0';
+		    if count="10111" then
+		     ready_mult_s<='1';
+		    end if;
 		  end if;
 		end process;
 		result_mult<=result_mult_s;
