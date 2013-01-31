@@ -18,13 +18,13 @@ add wave ready
 force clk 0 0ns, 1 5ns -repeat 10ns
 
 # init state, wait on release of reset
-force reset 1 0ns
+force reset 0 0ns
 force start 0 0ns
 force ready_multi 0 0ns
 force ready_mant 0 0ns
 
 # release reset and press start afterwards
-force reset 0 10ns
+force reset 1 10ns
 force start 1 20ns
 force start 0 30ns
 
