@@ -19,19 +19,17 @@ entity control is
 end control;
 architecture sm of control is
   type state is (init, read, mult, mult_dmy, extract, extract_dmy, assemble, display, display_dmy);
-  signal current_state, next_state : state; 
-  signal load_multi_s,load_mant_s,enable_s,enable_add_s,enable_res_s,flush_s:std_logic;
-  signal ready_s:std_logic_vector(7 downto 0):="00000000";
+  signal current_state, next_state : state;
   begin 
   process(current_state,start,ready_multi,ready_mant) 
   begin 
-    load_multi_s<='0';
-    load_mant_s<='0';
-    enable_s<='0';
-    enable_add_s<='0';
-    enable_res_s<='0';
-    flush_s<='0';
-    --ready_s<=(others =>'0');
+    load_multi<='0';
+    load_mant<='0';
+    enable<='0';
+    enable_add<='0';
+    enable_res<='0';
+    flush<='0';
+    ready<=(others =>'0');
     next_state<= init;
     case current_state is
         when init => 
@@ -42,22 +40,20 @@ architecture sm of control is
           end if;
         when read =>
           next_state <= mult;
-          enable_s <= '1';
-          flush_s <= '1';
+          enable <= '1';
+          flush <= '1';
          when mult =>
-          load_multi_s <= '1';
+          load_multi <= '1';
           next_state <= mult_dmy;
-         when mult_dmy =>
-          --load_multi_s <= '0';
-         
+         when mult_dmy =>         
           if ready_multi='1' then
               next_state <= extract;
           else
               next_state <= mult_dmy;
           end if; 
          when extract =>
-          enable_add_s <= '1';
-          load_mant_s <= '1';
+          enable_add <= '1';
+          load_mant <= '1';
           next_state <= extract_dmy;
          when extract_dmy =>
           if ready_mant='1' then
@@ -69,10 +65,9 @@ architecture sm of control is
                 -- TODO: is this state needed?
                 -- wait one clock cycle
             next_state <= display;
-            enable_res_s<='1';
+            enable_res<='1';
          when display =>
-            ready_s <= (others=>'1');
-            --enable_res_s <= '1';
+            ready <= (others=>'1');
             next_state <= display_dmy;
           when display_dmy =>
             if rising_edge(start) then
@@ -88,13 +83,6 @@ architecture sm of control is
          current_state<= init; 
       else
       if rising_edge(clk) then
-         load_multi<=load_multi_s;
-         load_mant<=load_mant_s;
-         enable<=enable_s;
-         enable_add<=enable_add_s;
-         enable_res<=enable_res_s;
-         flush<=flush_s;
-         ready<=ready_s;
          current_state<= next_state; 
       end if;
     end if; 
