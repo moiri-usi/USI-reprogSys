@@ -15,7 +15,7 @@ entity control is
     );
 end control;
 architecture sm of control is
-  type state is (init, load_val, load_mult, mult, load_res, display);
+  type state is (init, load_val, load_mult, mult, load_res, display, wait_start);
   signal current_state, next_state : state;
   begin 
   process(current_state,start,ready_multi) 
@@ -29,7 +29,7 @@ architecture sm of control is
     case current_state is
         when init => 
             next_state <= init;
-            if start ='1' then
+            if start ='0' then
                 next_state <= load_val;
             end if;
         when load_val =>
@@ -50,9 +50,16 @@ architecture sm of control is
         when display =>
             ready <= (others=>'1');
             next_state <= display;
-            if start='1' then
-                next_state <= load_val;
+				if start='1' then
+					 next_state <= wait_start;
             end if;
+			when wait_start =>
+					ready <= (others=>'1');
+					next_state<=wait_start;
+				if start='0' then
+               next_state <= load_val;
+				end if;
+				
         end case;
     end process;
 
