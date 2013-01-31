@@ -8,24 +8,20 @@ entity control is
         start       : in std_logic;
         ready_multi : in std_logic;
         load_multi  : out std_logic;
-        load_mant   : out std_logic;
         enable      : out std_logic;
-        enable_add  : out std_logic;
         enable_res  : out std_logic;
         flush       : out std_logic;
         ready       : out std_logic_vector(7 downto 0)
     );
 end control;
 architecture sm of control is
-  type state is (init, read, mult, mult_dmy, extract, extract_dmy, assemble, display);
+  type state is (init, load_val, load_mult, mult, load_res, display);
   signal current_state, next_state : state;
   begin 
   process(current_state,start,ready_multi) 
   begin 
     load_multi<='0';
-    load_mant<='0';
     enable<='0';
-    enable_add<='0';
     enable_res<='0';
     flush<='0';
     ready<=(others =>'0');
@@ -34,35 +30,28 @@ architecture sm of control is
         when init => 
             next_state <= init;
             if start ='1' then
-                next_state <= read;
+                next_state <= load_val;
             end if;
-        when read =>
-            next_state <= mult;
+        when load_val =>
+            next_state <= load_mult;
             enable <= '1';
             flush <= '1';
-        when mult =>
+        when load_mult =>
             load_multi <= '1';
-            next_state <= mult_dmy;
-        when mult_dmy =>         
+            next_state <= mult;
+        when mult =>
+            next_state <= mult;
             if ready_multi='1' then
-                next_state <= extract;
-            else
-                next_state <= mult_dmy;
-            end if; 
-        when extract =>
-            enable_add <= '1';
-            next_state <= extract_dmy;
-        when extract_dmy =>
-            load_mant<='1';
-                next_state <= assemble;
-        when assemble =>
+                next_state <= load_res;
+            end if;
+        when load_res =>
+            enable_res <= '1';
             next_state <= display;
-            enable_res<='1';
         when display =>
             ready <= (others=>'1');
             next_state <= display;
             if start='1' then
-                next_state <= read;
+                next_state <= load_val;
             end if;
         end case;
     end process;

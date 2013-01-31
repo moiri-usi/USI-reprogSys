@@ -6,11 +6,8 @@ add wave clk
 add wave reset
 add wave start
 add wave ready_multi
-add wave ready_mant
 add wave load_multi
-add wave load_mant
 add wave enable
-add wave enable_add
 add wave enable_res
 add wave flush
 add wave ready
@@ -21,7 +18,6 @@ force clk 0 0ns, 1 5ns -repeat 10ns
 force reset 0 0ns
 force start 0 0ns
 force ready_multi 0 0ns
-force ready_mant 0 0ns
 
 # release reset and press start afterwards
 force reset 1 10ns
@@ -31,9 +27,5 @@ force start 0 30ns
 # multiplication is ready
 force ready_multi 1 80ns
 force ready_multi 0 90ns
-
-# mantisse is ready
-force ready_mant 1 100ns
-force ready_mant 0 110ns
 
 run 200ns
