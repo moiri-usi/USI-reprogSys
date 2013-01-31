@@ -33,11 +33,10 @@ architecture sm of control is
     next_state<= init;
     case current_state is
         when init => 
-          if rising_edge(start) then
-            next_state <= read;
-          else
             next_state <= init;
-          end if;
+            if rising_edge(start) then
+                next_state <= read;
+            end if;
         when read =>
           next_state <= mult;
           enable <= '1';
@@ -66,10 +65,9 @@ architecture sm of control is
             enable_res<='1';
          when display =>
             ready <= (others=>'1');
+            next_state <= display;
             if rising_edge(start) then
                 next_state <= read;
-            else
-                next_state <= display;
             end if;
         end case;
        end process;
