@@ -8,9 +8,6 @@ port(
 	clk: in std_logic;
 	enable: in std_logic;
 	reset: in std_logic;
-	--sign: out std_logic;
-	--exp: out std_logic_vector(7 downto 0);
-	--mant: out std_logic_vector(22 downto 0);
 	op_out: out std_logic_vector(31 downto 0)
 );
 end reg_operand;  

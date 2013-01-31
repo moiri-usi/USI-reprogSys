@@ -10,12 +10,9 @@ Component control
 		reset : in std_logic;
 		start : in std_logic;
 		Ready_multi : in std_logic;	
-		
 		enable_res : out std_logic;
 		flush : out std_logic;
 		enable : out std_logic;
-		load_mant : out std_logic;
-		enable_add : out std_logic;
 		load_multi : out std_logic;
 		ready : out std_logic_vector (7 downto 0)	
 		);
@@ -28,25 +25,19 @@ Component datapath is
 		clk : in std_logic;
 		reset : in std_logic;
 		load_multi: in std_logic;
-		enable_add : in std_logic;
-		load_mant : in std_logic;
 		show_AB : in std_logic;
 		enable : in std_logic;
 		flush : in std_logic;
-		enable_res : in std_logic;
-		
+		enable_res : in std_logic;	
 		result : out std_logic_vector (31 downto 0);
 		ready_multi : out std_logic;
-		
-		out_AB : out std_logic_vector (31 downto 0)
-		
+		out_AB : out std_logic_vector (31 downto 0)	
 	);
 end component;
 
 component extractor is
 port(	
 	result_mult:in std_logic_vector(47 downto 0);
-	load_mant: in std_logic;
 	result_mant: out std_logic_vector(22 downto 0)
 );
 end component;  
@@ -71,15 +62,12 @@ port(
 	load_mult: in std_logic;
 	reset: in std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
-	--r_msb: out std_logic;
-	--overflow_mult: out std_logic;
 	ready_mult: out std_logic
 );
 end component; 
 
 component int_adder is
 port(	
-	enable_add:in std_logic;
 	exp_a:in std_logic_vector(7 downto 0);
 	exp_b:in std_logic_vector(7 downto 0);
 	r_msb: in std_logic;
@@ -92,9 +80,6 @@ port(
 	clk: in std_logic;
 	enable: in std_logic;
 	reset: in std_logic;
-	--sign: out std_logic;
-	--exp: out std_logic_vector(7 downto 0);
-	--mant: out std_logic_vector(22 downto 0);
 	op_out: out std_logic_vector(31 downto 0)
 );
 end component; 

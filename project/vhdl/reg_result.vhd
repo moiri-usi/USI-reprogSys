@@ -16,7 +16,7 @@ port(
 end reg_result;  
 
 architecture reg_result_arch of reg_result is
-signal result_s:std_logic_vector(31 downto 0):=(others => '0');
+signal result_s:std_logic_vector(31 downto 0);
 begin
   process(clk,reset)
 		begin

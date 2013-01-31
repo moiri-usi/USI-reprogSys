@@ -10,8 +10,6 @@ port (
 		clk : in std_logic;
 		reset : in std_logic;
 		load_multi: in std_logic;
-		enable_add : in std_logic;
-		load_mant : in std_logic;
 		show_AB : in std_logic;
 		enable : in std_logic;
 		flush : in std_logic;
@@ -26,23 +24,16 @@ architecture behaviour of datapath is
  
  signal sign_result : std_logic;
  -- signal for register
- --signal mant_a_in, mant_b_in : std_logic_vector (22 downto 0);
- --signal exp_a_in, exp_b_in : std_logic_vector (7 downto 0);
- --signal sign_a_in, sign_b_in : std_logic;
  signal oper_a, oper_b, op_a_out_in, op_b_out_in : std_logic_vector (31 downto 0);
  -- signal for datapath
  signal result_mult_in : std_logic_vector (47 downto 0 );
  -- signal for adder
- --signal r_msb_in : std_logic;
  signal exp_res_in: std_logic_vector (7 downto 0);
  -- signal for extractor
  signal resul_mant_in : std_logic_vector (22 downto 0);
  
  
 begin 
-	
-	
-	
 	a_rom : rom_a port map (
 							add_A => add_A,
 							op_a => oper_a
@@ -59,10 +50,6 @@ begin
 							  reset => reset,
 							  op => oper_a,
 							  enable => enable,
-							  
-							 -- sign => sign_a_in,
-							 -- exp => exp_a_in,
-							 -- mant => mant_a_in,
 							  op_out => op_a_out_in
 							);
 							
@@ -71,10 +58,6 @@ begin
 								reset => reset,
 								op => oper_b,
 								enable => enable,
-							  
-							 -- sign => sign_b_in,
-							  --exp => exp_b_in,
-							  --mant => mant_b_in,
 							  op_out => op_b_out_in
 							);
 							
@@ -89,23 +72,19 @@ begin
 							clk => clk,
 							load_mult => load_multi,
 							reset => reset,
-							
 							result_mult => result_mult_in, 
-							--r_msb => r_msb_in,
 							ready_mult => ready_multi	
 							);
 	
 	adder: int_adder port map(
 							exp_a => op_a_out_in(30 downto 23),
 							exp_b => op_b_out_in(30 downto 23),
-							enable_add => enable_add,
 							r_msb => result_mult_in(47),
 							exp_res => exp_res_in
 							);
 							
 	extrac : extractor port map(
 							result_mult => result_mult_in,
-							load_mant => load_mant,
 							result_mant => resul_mant_in
 								);
 							
@@ -117,9 +96,6 @@ begin
 							reset => reset,
 							clk => clk,
 							enable_res => enable_res,
-							result => result
-							
+							result => result							
 	);
-	
-
 	end behaviour;
