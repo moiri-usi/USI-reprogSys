@@ -75,7 +75,7 @@ port(
 	load_mult: in std_logic;
 	reset: in std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
-	r_msb: out std_logic;
+	--r_msb: out std_logic;
 	--overflow_mult: out std_logic;
 	ready_mult: out std_logic
 );
@@ -96,18 +96,23 @@ port(
 	clk: in std_logic;
 	enable: in std_logic;
 	reset: in std_logic;
-	sign: out std_logic;
-	exp: out std_logic_vector(7 downto 0);
-	mant: out std_logic_vector(22 downto 0);
+	--sign: out std_logic;
+	--exp: out std_logic_vector(7 downto 0);
+	--mant: out std_logic_vector(22 downto 0);
 	op_out: out std_logic_vector(31 downto 0)
 );
 end component; 
 
-component mux is
+component rom_a is
     port (
         add_a       : in std_logic_vector(2 downto 0);
+        op_a        : out std_logic_vector(31 downto 0)
+    );
+end component;
+
+component rom_b is
+    port (
         add_b       : in std_logic_vector(2 downto 0);
-        op_a        : out std_logic_vector(31 downto 0);
         op_b        : out std_logic_vector(31 downto 0)
     );
 end component;

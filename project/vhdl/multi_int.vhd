@@ -9,7 +9,7 @@ port(
 	load_mult: in std_logic;
 	reset: in std_logic;
 	result_mult: out std_logic_vector(47 downto 0);
-	r_msb: out std_logic;
+	--r_msb: out std_logic;
 	--overflow_mult: out std_logic;
 	ready_mult: out std_logic
 );
@@ -19,7 +19,7 @@ architecture int_multiplier_arch of int_multiplier is
 signal a_m_s:std_logic_vector(47 downto 0):=(others => '0');
 signal b_m_s:std_logic_vector(23 downto 0):=(others => '0');
 signal result_mult_s:std_logic_vector(47 downto 0):=(others => '0');
-signal r_msb_s:std_logic:='0';
+--signal r_msb_s:std_logic:='0';
 signal ready_mult_s:std_logic:='0';
 signal count:std_logic_vector(4 downto 0):="00000";
 begin
@@ -28,7 +28,7 @@ begin
 		  if reset ='0' then
 		    --ready_mult<='0';
 		    --overflow_mult<='0';
-		    r_msb_s<='0';
+		    --r_msb_s<='0';
 		    a_m_s<=(others => '0');
 		    b_m_s<=(others => '0');
 		    count<="00000";
@@ -40,7 +40,7 @@ begin
 		       a_m_s<="0000000000000000000000001" & a_m;
 		       b_m_s<= '1' & b_m;
 		       count<="00000";
-		       r_msb_s<='0';
+		       --r_msb_s<='0';
 		       result_mult_s<=(others => '0');
 		    else
 		      if rising_edge(clk) then
@@ -49,7 +49,7 @@ begin
 		        count<=count + 1;
 		        if b_m_s(0) ='1' then
 		         result_mult_s<=result_mult_s + a_m_s;
-		         r_msb_s<=result_mult_s(47);
+		         --r_msb_s<=result_mult_s(47);
 		        end if;
 		       end if;
 		    end if;
@@ -65,6 +65,6 @@ begin
 		  end if;
 		end process;
 		result_mult<=result_mult_s;
-		r_msb<=r_msb_s;
+		--r_msb<=r_msb_s;
 		ready_mult<=ready_mult_s;
 end int_multiplier_arch;
