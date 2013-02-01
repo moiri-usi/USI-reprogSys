@@ -17,7 +17,7 @@ end int_multiplier;
 architecture int_multiplier_arch of int_multiplier is
 signal a_m_s:std_logic_vector(47 downto 0);
 signal b_m_s:std_logic_vector(23 downto 0);
-signal result_mult_s:std_logic_vector(47 downto 0);
+signal result_mult_s:std_logic_vector(48 downto 0);
 signal count:std_logic_vector(4 downto 0);
 begin
     process(clk,reset,load_mult,a_m,b_m,result_mult_s)
@@ -30,7 +30,6 @@ begin
 		  else
 		      if rising_edge(clk) then
 		        if load_mult ='1' then
-		         mant_overflow <='0';
 		         a_m_s<="0000000000000000000000001" & a_m;
 		         b_m_s<= '1' & b_m;
 		         count<="00000";
@@ -41,11 +40,9 @@ begin
 		         count<=count + 1;
 		         result_mult_s<=result_mult_s;
 		         if b_m_s(0) ='1' then
-		          result_mult_s<=result_mult_s + a_m_s;
-		          if result_mult_s(46)='1' and a_m_s(46)='1'then
-		            mant_overflow <= '1';
+		          result_mult_s<=result_mult_s + ('0' & a_m_s);
 		         end if;
-		      end if;
+		      
 		    end if;
 		end if;
 		 end if;
@@ -57,7 +54,10 @@ begin
 		    if count="10111" then
 		     ready_mult<='1';
 		    end if;
+			if result_mult_s(48)='1' then -- and a_m_s(46)='1'then
+		      mant_overflow <= '1';
+			end if;
 		  end if;
 		end process;
-result_mult<=result_mult_s;
+result_mult<=result_mult_s(47 downto 0);
 end int_multiplier_arch;

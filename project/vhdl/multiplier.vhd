@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
-use work.Multiplier_Package.all;
+--use work.Multiplier_Package.all;
 
 entity Multiplier is
 port ( 
@@ -18,7 +18,7 @@ port (
 );
 end Multiplier;
 
-Architecture behavior of Multiplier is
+Architecture Multiplier_arch of Multiplier is
 	signal ready_multi_in, flush_in, enable_in, load_multi_in,enable_except_s, enable_res_in, sm_flush_in:std_logic;
 	signal ready_s, except_s, sm_except_in:std_logic_vector(7 downto 0);
 begin 
@@ -57,6 +57,5 @@ u2: datapath port map (
     sm_flush    => sm_flush_in,
     sm_except   => sm_except_in,
     out_AB      => outAB
-);
-							
-end behavior;
+);						
+end Multiplier_arch;

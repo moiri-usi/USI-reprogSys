@@ -62,14 +62,20 @@ architecture sm of control is
         when display =>
 		    enable_except <= '1';
             except<=sm_except;
-            ready <= (others=>'1');
+            ready <="10101010";
+            if sm_except = "00000000" then
+              ready <= (others=>'1');
+           end if;
             next_state <= display;
 				if start='1' then
 					 next_state <= wait_start;
             end if;
 			when wait_start =>
 				enable_except <= '1';
-					ready <= (others=>'1');
+					ready <="10101010";
+            if sm_except = "00000000" then
+              ready <= (others=>'1');
+           end if;
 					except<=sm_except;
 					next_state<=wait_start;
 				if start='0' then
