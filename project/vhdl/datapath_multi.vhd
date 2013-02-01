@@ -26,42 +26,28 @@ architecture arch of datapath_multi is
 begin
     process(clk, reset, load_ops, shift_ops, add_ops, a_m, b_m, result_mult_s)
     begin
-        if reset ='0' then
-            a_m_s<=(others => '0');
-            b_m_s<=(others => '0');
+        if load_ops = '1' then
+            a_m_s<="0000000000000000000000001" & a_m;
+            b_m_s<= '1' & b_m;
             result_mult_s<=(others => '0');
-            add_ctrl <= '0';
-            overflow_ctrl <= '0';
-            ready_ctrl <= '0';
-        elsif rising_edge(clk) then
-            if load_ops = '1' then
-		        a_m_s<="0000000000000000000000001" & a_m;
-		        b_m_s<= '1' & b_m;
-                result_mult_s<=(others => '0');
-            elsif shift_ops = '1' then
-		        a_m_s <= a_m_s(46 downto 0) & '0';
-		        b_m_s <= '0' & b_m_s(23 downto 1);
-		        if b_m_s(0) ='1' then
-                    add_ctrl <= '1';
-                elsif b_m_s = "000000000000000000000000" then
-                    ready_ctrl <= '1';
-                end if;
-            elsif add_ops = '1' then
-		        result_mult_s <= result_mult_s + a_m_s;
-                add_ctrl <= '0';
-                if result_mult_s(48) = '1' then
-                    overflow_ctrl <= '1';
-                end if;
-            else
-                add_ctrl <= '0';
-                overflow_ctrl <= '0';
-                ready_ctrl <= '0';
-                a_m_s<=(others => '0');
-                b_m_s<=(others => '0');
-                result_mult_s<=result_mult_s;
-		    end if;
+        elsif shift_ops = '1' and rising_edge(clk) then
+		    a_m_s <= a_m_s(46 downto 0) & '0';
+		    b_m_s <= '0' & b_m_s(23 downto 1);
+        elsif add_ops = '1' and rising_edge(clk) then
+            result_mult_s <= result_mult_s + a_m_s;
 		end if;
     end process;
+
+    process(clk, reset, load_ops, shift_ops, add_ops, a_m, b_m, result_mult_s)
+    begin
+        if b_m_s = "000000000000000000000000" then
+            ready_ctrl <= '1';
+        else
+            ready_ctrl <= '0';
+        end if;
+    end process;
+
+    add_ctrl <= b_m_s(0);
 
     result_mult<=result_mult_s(47 downto 0);
 

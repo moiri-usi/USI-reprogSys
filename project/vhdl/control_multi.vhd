@@ -19,10 +19,10 @@ entity control_multi is
 end control_multi;
 
 architecture sm of control_multi is
-    type state is (init, load, shifter, adder, overflow, done);
+    type state is (init, load, check, shifter, adder, done);
     signal current_state, next_state : state;
 begin 
-    process(current_state, load_mult, add_ctrl, ready_ctrl, overflow_ctrl) 
+    process(current_state, load_mult, add_ctrl, ready_ctrl) 
     begin
         add_ops <= '0';
         shift_ops <= '0';
@@ -37,29 +37,22 @@ begin
                 next_state <= load;
             end if;
         when load =>
-            next_state <= shifter;
+            next_state <= check;
             load_ops <= '1';
-        when shifter => 
-            next_state <= shifter;
-            shift_ops <= '1';
+        when check =>
             if add_ctrl = '1' then
                 next_state <= adder;
+            elsif ready_ctrl = '1' then
+                next_state <= done;
+            else
+                next_state <= shifter;
             end if;
+        when shifter => 
+            next_state <= check;
+            shift_ops <= '1';
         when adder =>
             next_state <= shifter;
             add_ops <= '1';
-            if ready_ctrl = '1' then
-                next_state <= done;
-            elsif overflow_ctrl = '1' then
-                next_state <= overflow;
-            end if;
-        when overflow =>
-            next_state <= overflow;
-            ready_mult <= '1';
-            mant_overflow <= '1';
-            if load_mult = '1' then
-                next_state <= load;
-            end if;
         when done =>
             next_state <= done;
             ready_mult <= '1';
