@@ -34,7 +34,7 @@ begin
         when init => 
             next_state <= init;
             if load_mult = '1' then
-                next_state <= shifter;
+                next_state <= load;
             end if;
         when load =>
             next_state <= shifter;

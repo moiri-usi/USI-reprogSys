@@ -37,6 +37,7 @@ begin
             if load_ops = '1' then
 		        a_m_s<="0000000000000000000000001" & a_m;
 		        b_m_s<= '1' & b_m;
+                result_mult_s<=(others => '0');
             elsif shift_ops = '1' then
 		        a_m_s <= a_m_s(46 downto 0) & '0';
 		        b_m_s <= '0' & b_m_s(23 downto 1);
@@ -47,6 +48,7 @@ begin
                 end if;
             elsif add_ops = '1' then
 		        result_mult_s <= result_mult_s + a_m_s;
+                add_ctrl <= '0';
                 if result_mult_s(48) = '1' then
                     overflow_ctrl <= '1';
                 end if;
@@ -56,7 +58,7 @@ begin
                 ready_ctrl <= '0';
                 a_m_s<=(others => '0');
                 b_m_s<=(others => '0');
-                result_mult_s<=(others => '0');
+                result_mult_s<=result_mult_s;
 		    end if;
 		end if;
     end process;
