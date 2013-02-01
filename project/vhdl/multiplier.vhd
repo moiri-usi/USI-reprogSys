@@ -19,8 +19,8 @@ port (
 end Multiplier;
 
 Architecture behavior of Multiplier is
-	signal ready_multi_in, flush_in, enable_in, load_multi_in, enable_res_in, sm_flush_in, sm_except_in:std_logic;
-	signal ready_s, except_s:std_logic_vector(7 downto 0);
+	signal ready_multi_in, flush_in, enable_in, load_multi_in,enable_except_s, enable_res_in, sm_flush_in:std_logic;
+	signal ready_s, except_s, sm_except_in:std_logic_vector(7 downto 0);
 begin 
 
 u1: control port map (
@@ -34,6 +34,7 @@ u1: control port map (
     ready           => ready_s,
     except          => except_s,
     enable_res      => enable_res_in,
+    enable_except   => enable_except_s,
     sm_flush        => sm_flush_in,
     sm_except       => sm_except_in
 );
@@ -52,6 +53,7 @@ u2: datapath port map (
     enable_res  => enable_res_in,
     result      => result,
     ready_multi => ready_multi_in,
+    enable_except => enable_except_s,
     sm_flush    => sm_flush_in,
     sm_except   => sm_except_in,
     out_AB      => outAB

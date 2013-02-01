@@ -42,12 +42,12 @@ begin
 		         result_mult_s<=result_mult_s;
 		         if b_m_s(0) ='1' then
 		          result_mult_s<=result_mult_s + a_m_s;
-		          if result_mult_s(47)='1' and a_m_s(47)='1'then
+		          if result_mult_s(46)='1' and a_m_s(46)='1'then
 		            mant_overflow <= '1';
-		           end if;
 		         end if;
 		      end if;
 		    end if;
+		end if;
 		 end if;
 		end process;
 		process(clk)

@@ -6,6 +6,7 @@ entity float_except is
         op_a          : in std_logic_vector(31 downto 0);
         op_b          : in std_logic_vector(31 downto 0);
         sign          : in std_logic;
+        enable        : in std_logic;
         exp_overflow  : in std_logic;
         mant_overflow : in std_logic;
         sm_flush      : out std_logic;
@@ -15,10 +16,11 @@ end float_except;
 
 architecture handler of float_except is
 begin
-    process (op_a, op_b, sign, exp_overflow, mant_overflow)
+    process (op_a, op_b, sign, exp_overflow, mant_overflow,enable)
     begin
         sm_except <= (others => '0');
         sm_flush <= '0';
+      if enable ='1' then
         if op_a(30 downto 23) = "00000000" then
             sm_flush <= '1';
             if op_a(22 downto 0) = "00000000000000000000000" then
@@ -86,5 +88,6 @@ begin
         else
             sm_flush <= '0';
         end if;
+    end if;
     end process;
 end handler;

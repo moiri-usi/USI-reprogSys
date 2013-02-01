@@ -14,7 +14,9 @@ port (
 		enable : in std_logic;
 		flush : in std_logic;
 		enable_res : in std_logic;
-		
+		enable_except: in std_logic;
+		sm_flush: out std_logic;
+		sm_except: out std_logic_vector(7 downto 0);
 		result : out std_logic_vector (31 downto 0);
 		ready_multi : out std_logic;
 		out_AB : out std_logic_vector (31 downto 0)		
@@ -32,8 +34,9 @@ architecture behaviour of datapath is
  -- signal for extractor
  signal resul_mant_in : std_logic_vector (22 downto 0);
  
- signal to_do_signal: std_logic;
- 
+ signal mant_overflow_s: std_logic;
+ signal exp_overflow_s: std_logic;
+signal sign_result_s: std_logic;
 begin 
 	a_rom : rom_a port map (
 							add_A => add_A,
@@ -62,8 +65,8 @@ begin
 							  op_out => op_b_out_in
 							);
 							
-	sign_result <= op_a_out_in(31) xor op_b_out_in(31);
-	
+	sign_result_s <= op_a_out_in(31) xor op_b_out_in(31);
+	sign_result<=sign_result_s;
 	out_AB <= op_b_out_in when show_AB = '1'
 					else op_a_out_in;
 	
@@ -73,7 +76,7 @@ begin
 							clk => clk,
 							load_mult => load_multi,
 							reset => reset,
-							mant_overflow => to_do_signal,
+							mant_overflow => mant_overflow_s,
 							result_mult => result_mult_in, 
 							ready_mult => ready_multi	
 							);
@@ -82,7 +85,7 @@ begin
 							exp_a => op_a_out_in(30 downto 23),
 							exp_b => op_b_out_in(30 downto 23),
 							r_msb => result_mult_in(47),
-							exp_overflow => to_do_signal,
+							exp_overflow => exp_overflow_s,
 							exp_res => exp_res_in
 							);
 							
@@ -101,4 +104,15 @@ begin
 							enable_res => enable_res,
 							result => result							
 	);
+	
+except: float_except port map(
+        op_a => op_a_out_in,
+        op_b => op_b_out_in,
+        sign => sign_result_s,
+        exp_overflow => exp_overflow_s,
+        mant_overflow => mant_overflow_s,
+		    enable => enable_except,
+        sm_flush => sm_flush,
+        sm_except => sm_except
+        );
 	end behaviour;
