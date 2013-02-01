@@ -18,7 +18,7 @@ end float_except;
 architecture handler of float_except is
   
 begin
-    process (op_a, op_b, sign, exp_overflow, mant_overflow,enable)
+    process (op_a, op_b, sign, exp_overflow, mant_overflow,enable,prec_lost)
     begin
 		sm_except <= (others => '0');
 		sm_flush <= '0';
