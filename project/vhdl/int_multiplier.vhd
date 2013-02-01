@@ -24,7 +24,7 @@ component control_multi is
         load_mult     : in std_logic;
         add_ctrl      : in std_logic;
         ready_ctrl    : in std_logic;
-        overfow_ctrl  : in std_logic;
+        overflow_ctrl  : in std_logic;
         add_ops       : out std_logic;
         shift_ops     : out std_logic;
         load_ops      : out std_logic;
