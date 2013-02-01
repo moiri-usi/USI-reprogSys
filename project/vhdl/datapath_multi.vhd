@@ -12,7 +12,6 @@ entity datapath_multi is
         shift_ops     : in std_logic;
         load_ops      : in std_logic;
         add_ctrl      : out std_logic;
-        overflow_ctrl : out std_logic;
         ready_ctrl    : out std_logic;
         result_mult   : out std_logic_vector(47 downto 0)
     );
@@ -26,7 +25,11 @@ architecture arch of datapath_multi is
 begin
     process(clk, reset, load_ops, shift_ops, add_ops, a_m, b_m, result_mult_s)
     begin
-        if load_ops = '1' then
+        if reset = '0' then
+            a_m_s <= (others => '0');
+            b_m_s <= (others => '0');
+            result_mult_s<=(others => '0');
+        elsif load_ops = '1' then
             a_m_s<="0000000000000000000000001" & a_m;
             b_m_s<= '1' & b_m;
             result_mult_s<=(others => '0');
