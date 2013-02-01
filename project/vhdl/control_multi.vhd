@@ -9,22 +9,24 @@ entity control_multi is
         load_mult     : in std_logic;
         add_ctrl      : in std_logic;
         ready_ctrl    : in std_logic;
-        overfow_ctrl  : in std_logic;
+        overflow_ctrl : in std_logic;
         add_ops       : out std_logic;
         shift_ops     : out std_logic;
+        load_ops      : out std_logic;
         mant_overflow : out std_logic;
         ready_mult    : out std_logic
     );
 end control_multi;
 
 architecture sm of control_multi is
-    type state is (init, shifter, adder, overflow, done);
+    type state is (init, load, shifter, adder, overflow, done);
     signal current_state, next_state : state;
 begin 
-    process(current_state) 
+    process(current_state, load_mult, add_ctrl, ready_ctrl, overflow_ctrl) 
     begin
         add_ops <= '0';
         shift_ops <= '0';
+        load_ops <= '0';
         mant_overflow <= '0';
         ready_mult <= '0';
         next_state <= init;
@@ -34,6 +36,9 @@ begin
             if load_mult = '1' then
                 next_state <= shifter;
             end if;
+        when load =>
+            next_state <= shifter;
+            load_ops <= '1';
         when shifter => 
             next_state <= shifter;
             shift_ops <= '1';
@@ -49,17 +54,17 @@ begin
                 next_state <= overflow;
             end if;
         when overflow =>
-            next_state => overflow;
+            next_state <= overflow;
             ready_mult <= '1';
             mant_overflow <= '1';
             if load_mult = '1' then
-                next_state <= shifter;
+                next_state <= load;
             end if;
         when done =>
             next_state <= done;
             ready_mult <= '1';
             if load_mult = '1' then
-                next_state <= shifter;
+                next_state <= load;
             end if;
         end case;
    end process;
