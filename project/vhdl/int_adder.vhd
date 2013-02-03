@@ -17,12 +17,5 @@ signal exp_res_s: std_logic_vector(8 downto 0);
 begin
     exp_res_s<=('0' & exp_a) + ('0' & exp_b) - 127 + r_msb;
     exp_res<= exp_res_s(7 downto 0);
-    process(exp_res_s)
-    begin
-		if exp_res_s(8) ='1' then 
-			exp_overflow<='1';
-		else
-			exp_overflow<='0';
-		end if;
-    end process;
+    exp_overflow<=exp_res_s(8);
 end int_adder_arch;

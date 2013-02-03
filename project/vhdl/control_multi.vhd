@@ -12,7 +12,6 @@ entity control_multi is
         add_ops       : out std_logic;
         shift_ops     : out std_logic;
         load_ops      : out std_logic;
-        mant_overflow : out std_logic;
         ready_mult    : out std_logic
     );
 end control_multi;
@@ -26,7 +25,6 @@ begin
         add_ops <= '0';
         shift_ops <= '0';
         load_ops <= '0';
-        mant_overflow <= '0';
         ready_mult <= '0';
         next_state <= init;
         case current_state is

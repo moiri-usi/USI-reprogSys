@@ -8,7 +8,6 @@ entity int_multiplier is
         a_m           : in std_logic_vector(22 downto 0);
         b_m           : in std_logic_vector(22 downto 0);
         load_mult     : in std_logic;
-        mant_overflow : out std_logic;
         result_mult   : out std_logic_vector(47 downto 0);
 		ready_mult    : out std_logic
 	);
@@ -27,7 +26,6 @@ component control_multi is
         add_ops       : out std_logic;
         shift_ops     : out std_logic;
         load_ops      : out std_logic;
-        mant_overflow : out std_logic;
         ready_mult    : out std_logic
     );
 end component;
@@ -57,7 +55,6 @@ begin
         add_ops         => add_ops_in,
         shift_ops       => shift_ops_in,
         load_ops        => load_ops_in,
-        mant_overflow   => mant_overflow,
         ready_mult      => ready_mult
 	);
 
