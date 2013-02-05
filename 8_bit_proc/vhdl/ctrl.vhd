@@ -18,6 +18,40 @@ entity ctrl is
 end ctrl;
 
 architecture arch of exec is
+    signal s_mem_sel_op : std_logic_vector(2 downto 0);
+    signal s_mem1_we_n, s_mem2_we_n : std_logic_vector(3 downto 0);
 begin
+    sel_in_1 <= addr_in_1;
+    sel_in_2 <= addr_in_2;
+    when opcode = "001" then sel_const <= '1' else sel_const <= '0';
 
+    process(clk, reset_n, opcode, s_mem)
+    begin
+        if reset_n = '0' then
+            s_mem_sel_op <= (others => '0');
+            sel_op <= (others => '0');
+            s_mem1_we_n <= (others => '1');
+            s_mem2_we_n <= (others => '1');
+            we_n <= (others => '1'); 
+        else
+            if rising_edge(clk) then
+                s_mem_sel_op <= opcode;
+                sel_op <= s_mem_sel_op;
+                if opcode = "000" then
+                    s_mem2_we_n <= (others => '1');
+                elsif addr_out = "00" then
+                    s_mem2_we_n <= "1110";
+                elsif addr_out = "01" then
+                    s_mem2_we_n <= "1101";
+                elsif addr_out = "10" then
+                    s_mem2_we_n <= "1011";
+                else
+                    s_mem2_we_n <= "0111";
+                end if;
+                s_mem1_we_n <= s_mem2_we_n;
+                we_n <= s_mem1_we_n;
+            end if;
+        end if;
+    end process;
+ 
 end arch;
