@@ -12,11 +12,14 @@ end mux8_21;
 
 architecture arch of mux8_21 is
 begin
-    process(addr, data_in)
+    process(addr, data_in_1, data_in_2)
     begin
-        case addr is
-            when '0' => data_out <= data_in_1;
-            when '1' => data_out <= data_in_2;
-        end case;
+        if addr = '0' then
+            data_out <= data_in_1;
+        elsif addr = '1' then
+            data_out <= data_in_2;
+        else
+            data_out <= (others => '0');
+        end if;
     end process;
 end arch;

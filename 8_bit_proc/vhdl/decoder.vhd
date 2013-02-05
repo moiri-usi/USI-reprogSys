@@ -18,5 +18,5 @@ begin
     immed_op <= instruction(13 downto 6);
     addr_in_1 <= instruction(5 downto 4);
     addr_in_2 <= instruction(3 downto 2);
-    addr_out <= instruction(1 downto 0;
+    addr_out <= instruction(1 downto 0);
 end arch;

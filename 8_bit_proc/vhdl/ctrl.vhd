@@ -17,15 +17,15 @@ entity ctrl is
     );
 end ctrl;
 
-architecture arch of exec is
+architecture arch of ctrl is
     signal s_mem_sel_op : std_logic_vector(2 downto 0);
     signal s_mem1_we_n, s_mem2_we_n : std_logic_vector(3 downto 0);
 begin
     sel_in_1 <= addr_in_1;
     sel_in_2 <= addr_in_2;
-    when opcode = "001" then sel_const <= '1' else sel_const <= '0';
+	sel_const <= '1' when opcode = "001" else '0';
 
-    process(clk, reset_n, opcode, s_mem)
+    process(clk, reset_n, opcode, s_mem_sel_op, s_mem1_we_n, s_mem2_we_n)
     begin
         if reset_n = '0' then
             s_mem_sel_op <= (others => '0');

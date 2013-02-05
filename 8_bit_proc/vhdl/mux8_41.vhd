@@ -14,13 +14,18 @@ end mux8_41;
 
 architecture arch of mux8_41 is
 begin
-    process(addr, data_in)
+    process(addr, data_in_1, data_in_2, data_in_3, data_in_4)
     begin
-        case addr is
-            when "00" => data_out <= data_in_1;
-            when "01" => data_out <= data_in_2;
-            when "10" => data_out <= data_in_3;
-            when "11" => data_out <= data_in_4;
-        end case;
+        if addr = "00" then
+            data_out <= data_in_1;
+        elsif addr = "01" then
+            data_out <= data_in_2;
+        elsif addr = "10" then
+            data_out <= data_in_3;
+        elsif addr = "11" then
+            data_out <= data_in_4;
+        else
+            data_out <= (others => '0');
+        end if;
     end process;
 end arch;

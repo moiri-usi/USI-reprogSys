@@ -1,5 +1,6 @@
 library ieee; 
 use ieee.std_logic_1164.all; 
+use ieee.std_logic_unsigned.all; 
 
 entity exec is
 	port(
@@ -14,13 +15,20 @@ architecture arch of exec is
 begin
     process(ctrl, data_in_a, data_in_b)
     begin
-        case ctrl is
-            when "000" => data_out <= (others => '0');              -- nop
-            when "001" => data_out <= data_in_a;                    -- move const
-            when "010" => data_out <= data_in_a + data_in_b;        -- add
-            when "011" => data_out <= data_in_a or data_in_b;       -- or
-            when "100" => data_out <= data_in_a and data_in_b;      -- and
-            when "101" => data_out <= data_in_a(6 downto 0) & '0';  -- shift left
-        end case;
+        if ctrl = "000" then
+            data_out <= (others => '0');              -- nop
+        elsif ctrl = "001" then
+            data_out <= data_in_a;                    -- move const
+        elsif ctrl = "010" then
+            data_out <= data_in_a + data_in_b;        -- add
+        elsif ctrl = "011" then
+            data_out <= data_in_a or data_in_b;       -- or
+        elsif ctrl = "100" then
+            data_out <= data_in_a and data_in_b;      -- and
+        elsif ctrl = "101" then
+            data_out <= data_in_a(6 downto 0) & '0';  -- shift left
+        else
+            data_out <= (others => '0');              -- nop
+        end if;
     end process;
 end arch;
