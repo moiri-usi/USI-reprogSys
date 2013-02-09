@@ -38,6 +38,8 @@ def compiler(instruction):
     elif "SL" in split_inst[0]:
         if split_inst[1].isdigit():
             opcode  = 5 << 14;  opcode += int(split_inst[1]) << 6;  opcode += d[split_inst[2]]
+        else:
+            opcode  = 5 << 14;  opcode += 0 << 6;                   opcode += d[split_inst[1]] << 4; opcode += d[split_inst[2]] << 2;  opcode += d[split_inst[3]]
     return int2bin(opcode,17)
 
 if len(sys.argv) == 2:
