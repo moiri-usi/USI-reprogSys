@@ -21,13 +21,13 @@ architecture arch of ctrl is
     signal s_mem_sel_op : std_logic_vector(2 downto 0);
     signal s_mem1_we_n, s_mem2_we_n : std_logic_vector(3 downto 0);
 begin
-    sel_in_1 <= addr_in_1;
-    sel_in_2 <= addr_in_2;
-	sel_const <= '1' when opcode = "001" else '0';
 
     process(clk, reset_n, opcode, s_mem_sel_op, s_mem1_we_n, s_mem2_we_n)
     begin
         if reset_n = '0' then
+            sel_in_1 <= (others => '0');
+            sel_in_2 <= (others => '0');
+            sel_const <= '0';
             s_mem_sel_op <= (others => '0');
             sel_op <= (others => '0');
             s_mem1_we_n <= (others => '1');
@@ -35,6 +35,12 @@ begin
             we_n <= (others => '1'); 
         else
             if rising_edge(clk) then
+                sel_in_1 <= addr_in_1;
+                sel_in_2 <= addr_in_2;
+                sel_const <= '0';
+                if opcode = "001" then
+                    sel_const <= '1';
+                end if;
                 s_mem_sel_op <= opcode;
                 sel_op <= s_mem_sel_op;
                 if opcode = "000" then

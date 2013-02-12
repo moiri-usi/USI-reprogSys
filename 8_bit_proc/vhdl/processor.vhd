@@ -12,9 +12,9 @@ end processor;
 
 architecture arch of processor is
 
-signal s_sel_const : std_logic;
+signal s_sel_const, s_rst_n : std_logic;
 signal s_sel_in_1, s_sel_in_2, s_addr_in_1, s_addr_in_2, s_addr_out : std_logic_vector(1 downto 0);
-signal s_sel_op, s_opcode, s_ctrl : std_logic_vector(2 downto 0);
+signal s_sel_op, s_opcode : std_logic_vector(2 downto 0);
 signal s_we_n : std_logic_vector(3 downto 0);
 signal s_immed_op, s_data_in_a, s_data_in_b, s_m2_m1, s_r2_m1, s_m1_r3, s_m3_r5 : std_logic_vector(7 downto 0);
 signal s_data_out, s_data_out_1, s_data_out_2, s_data_out_3, s_data_out_4, s_output : std_logic_vector(7 downto 0);
@@ -107,11 +107,11 @@ component regf is
     );
 end component;
 
-begin 
-    out_output <= s_output;
+begin
+    s_rst_n <= not rst_n; 
 	u1 : ctrl port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         opcode      => s_opcode,
         addr_in_1   => s_addr_in_1,
         addr_in_2   => s_addr_in_2,
@@ -133,7 +133,7 @@ begin
 	);
 
 	u3 : exec port map ( 
-        ctrl        => s_ctrl,
+        ctrl        => s_sel_op,
         data_in_a   => s_data_in_a,
         data_in_b   => s_data_in_b,
         data_out    => s_data_out
@@ -166,42 +166,42 @@ begin
 
     reg1 : reg17 port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         data_in     => in_instruction,
         data_out    => s_instruction
     );
 
     reg2 : reg8 port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         data_in     => s_immed_op,
         data_out    => s_r2_m1
     );
 
     reg3 : reg8 port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         data_in     => s_m1_r3,
         data_out    => s_data_in_b
     );
 
     reg4 : reg8 port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         data_in     => s_data_out,
         data_out    => s_output
     );
 
     reg5 : reg8 port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         data_in     => s_m3_r5,
         data_out    => s_data_in_a
     );
 
     reg6 : regf port map (
         clk         => clk,
-        reset_n     => rst_n,
+        reset_n     => s_rst_n,
         we_n        => s_we_n,
         data_in     => s_output,
         data_out_1  => s_data_out_1,
@@ -209,5 +209,6 @@ begin
         data_out_3  => s_data_out_3,
         data_out_4  => s_data_out_4
     );
+    out_output <= s_output;
 
 end arch;

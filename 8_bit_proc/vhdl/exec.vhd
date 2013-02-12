@@ -18,7 +18,7 @@ begin
         if ctrl = "000" then
             data_out <= (others => '0');              -- nop
         elsif ctrl = "001" then
-            data_out <= data_in_a;                    -- move const
+            data_out <= data_in_b;                    -- move const
         elsif ctrl = "010" then
             data_out <= data_in_a + data_in_b;        -- add
         elsif ctrl = "011" then
@@ -27,8 +27,6 @@ begin
             data_out <= data_in_a and data_in_b;      -- and
         elsif ctrl = "101" then
             data_out <= data_in_a(6 downto 0) & '0';  -- shift left
-        else
-            data_out <= (others => '0');              -- nop
         end if;
     end process;
 end arch;
