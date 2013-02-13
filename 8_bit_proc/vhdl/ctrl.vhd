@@ -38,7 +38,7 @@ begin
                 sel_in_1 <= addr_in_1;
                 sel_in_2 <= addr_in_2;
                 sel_const <= '0';
-                if opcode = "001" then
+                if (opcode = "001") or ((addr_in_1 xor addr_in_2) = "00") then
                     sel_const <= '1';
                 end if;
                 s_mem_sel_op <= opcode;
